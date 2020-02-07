@@ -20,3 +20,7 @@ jobs:
       with:
         name: dist
         path: dist/angular-themes-blog-post
+    - name: GitHub Pages Deploy
+      uses: maxheld83/ghpages@v0.2.1
+      env:
+        BUILD_DIR: dist/angular-themes-blog-post
