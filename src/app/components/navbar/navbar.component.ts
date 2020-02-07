@@ -27,7 +27,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
       );
 
     this.themeSubscription = combineLatest([this.brand, this.logo])
-      .subscribe(([b, l]) => {
+      .subscribe(([b]) => {
         console.log('theme has changed, brand = ' + b);
 
       });

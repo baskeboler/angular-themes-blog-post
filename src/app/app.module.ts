@@ -31,8 +31,12 @@ export const initThemes = (themes: ThemesInitService) => {
   ],
   providers: [
     ThemesService,
-    {provide: APP_INITIALIZER,
-    useFactory: initThemes, deps: [ThemesInitService], multi: true}
+    {
+      provide: APP_INITIALIZER,
+      useFactory: initThemes,
+      deps: [ThemesInitService],
+      multi: true
+    }
   ],
   bootstrap: [AppComponent]
 })

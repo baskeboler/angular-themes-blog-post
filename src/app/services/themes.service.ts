@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Theme } from '../models/theme';
 import * as tinycolor from 'tinycolor2';
-import { Subject, Observable, BehaviorSubject } from 'rxjs';
-import { internet, commerce,company,image,lorem } from "faker";
+import { Observable, BehaviorSubject } from 'rxjs';
+import { internet, company,image,lorem } from "faker";
 import { DomSanitizer } from '@angular/platform-browser';
 
 @Injectable()
