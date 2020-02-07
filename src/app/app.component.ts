@@ -1,21 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import { Theme, DEFAULT_THEME } from './models/theme';
-import { ThemesService } from './services/themes.service';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnInit {
+export class AppComponent  {
   title = 'angular-themes-blog-post';
 
-  constructor(private themes: ThemesService) {
+  constructor() {
 
   }
 
-  ngOnInit(): void {
-
-    // this.themes.setCurrentTheme(DEFAULT_THEME);
-  }
 }
