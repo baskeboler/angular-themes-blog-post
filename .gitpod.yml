@@ -3,3 +3,9 @@ tasks:
     command: npm run start
 image:
   file: .gitpod.Dockerfile
+
+vscode:
+  extensions:
+    - Angular.ng-template@0.900.11:OZI3dsoYLnqEoc9sSGUD/A==
+    - johnpapa.angular-essentials@0.6.3:kn6MdE8GXp3Nplq14ISQWg==
+    - johnpapa.Angular2@8.3.1:geLkcuAPpHMT4EbY5LmjeA==
