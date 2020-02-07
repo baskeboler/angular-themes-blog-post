@@ -1,1 +1,59 @@
 /* You can add global styles to this file, and also import other style files */
+
+:root {
+    --primaryColor: #129490;
+    --secondaryColor: #70B77E;
+    --tertiaryColor: #E0A890;
+    --textColor: #041B1B;
+}
+
+body {
+    background-color: var(--primaryColorLight40);
+    color: var(--textColor);
+
+    .bg-light {
+        background-color: var(--primaryColorLight50) !important;
+    }
+
+    .navbar {
+
+        &.navbar-light {
+
+            a {
+                color: var(--secondaryColorDark20) !important;
+            }
+
+            li.nav-item {
+                &.active a.nav-link {
+                    color: var(--secondaryColorDark40) !important;
+                    font-weight: bold;
+                }
+
+                a.nav-link {
+                    color: var(--secondaryColorDark30) !important;
+                    &.disabled {
+                        color: var(--secondaryColor) !important;
+                    }
+                }
+            }
+        }
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5 {
+        color: var(--textColorLight10);
+    }
+
+    .container {
+        background-color: var(--secondaryColorLight20);
+        border-left: 3px var(--primaryColor) solid;
+        border-right: 3px var(--primaryColor) solid;
+    }
+
+    .page-title {
+        color: var(--textColorLight20);
+    }
+}
