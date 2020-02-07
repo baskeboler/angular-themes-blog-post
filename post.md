@@ -1,0 +1,172 @@
+# implementing white labeling with angular and css variables
+
+## introduction
+
+A very common task in web development is doing white labeling. Usually you start off adding a theme or two to your application, you set some wrapper class name in a container element and you add a block of sass in your styles and customize under that class.
+
+
+
+``` html
+<div class="container my-theme">
+
+  <!-- my app content -->
+</div>
+
+```
+
+Your theme sass file: 
+
+``` scss
+// .. some imports  
+
+.my-theme {
+  $primary-color: #121212;
+  $secondary-color: #ededed;
+  // .. set all your variables
+
+  @import 'generic-styles.scss';
+
+  // You will probably end up adding custom snippets for specific themes.
+
+  .analytics-section { 
+    display: none;
+  }
+}
+
+```
+
+If you planned from the start to support white labeling then you probably wrote all the 
+style rules using the relevant sass variables that you will later override.
+
+After implementing more than 2 or 3 themes you will start noticing that this can get really messy.
+
+
+## time to refactor
+
+
+## fetching theme details from the backend
+
+## angular service
+
+### apply theme
+
+``` ts 
+private registerCssVar(name: string, value: string): void {
+    document.documentElement.style.setProperty(name, value);
+}
+```
+
+#### scaffold light and dark variants
+
+``` ts 
+public generateShades(name: string, color: string) {
+  const c = tinycolor(color);
+  for (let i = 1; i < 10; i++) {
+    const lighter = c.clone().lighten(10 * i);
+    const darker = c.clone().darken(10 * i);
+
+    this.registerCssVar(`${name}Dark${i*10}`, darker.toHexString());
+    this.registerCssVar(`${name}Light${i*10}`, lighter.toHexString());
+  }
+}
+```
+
+
+``` scss 
+// variables generated at runtime when theme is loaded
+:root {
+  --primaryColor:#129490;
+  --primaryColorDark10:#0c6664;
+  --primaryColorDark20:#073937;
+  --primaryColorDark30:#010c0b;
+  --primaryColorDark40:#000000;
+  --primaryColorDark50:#000000;
+  --primaryColorDark60:#000000;
+  --primaryColorDark70:#000000;
+  --primaryColorDark80:#000000;
+  --primaryColorDark90:#000000;
+  --primaryColorLight10:#18c1bc;
+  --primaryColorLight20:#27e5df;
+  --primaryColorLight30:#55eae6;
+  --primaryColorLight40:#82f0ec;
+  --primaryColorLight50:#b0f5f3;
+  --primaryColorLight60:#ddfbfa;
+  --primaryColorLight70:#ffffff;
+  --primaryColorLight80:#ffffff;
+  --primaryColorLight90:#ffffff;
+  --secondaryColor:#70B77E;
+  --secondaryColorDark10:#52a262;
+  --secondaryColorDark20:#41804d;
+  --secondaryColorDark30:#305e39;
+  --secondaryColorDark40:#1e3d24;
+  --secondaryColorDark50:#0d1b10;
+  --secondaryColorDark60:#000000;
+  --secondaryColorDark70:#000000;
+  --secondaryColorDark80:#000000;
+  --secondaryColorDark90:#000000;
+  --secondaryColorLight10:#92c89d;
+  --secondaryColorLight20:#b4d9bb;
+  --secondaryColorLight30:#d6eada;
+  --secondaryColorLight40:#f8fbf8;
+  --secondaryColorLight50:#ffffff;
+  --secondaryColorLight60:#ffffff;
+  --secondaryColorLight70:#ffffff;
+  --secondaryColorLight80:#ffffff;
+  --secondaryColorLight90:#ffffff;
+  --tertiaryColor:#E0A890;
+  --tertiaryColorDark10:#d58968;
+  --tertiaryColorDark20:#ca6940;
+  --tertiaryColorDark30:#a8532f;
+  --tertiaryColorDark40:#804024;
+  --tertiaryColorDark50:#582c19;
+  --tertiaryColorDark60:#30180e;
+  --tertiaryColorDark70:#090402;
+  --tertiaryColorDark80:#000000;
+  --tertiaryColorDark90:#000000;
+  --tertiaryColorLight10:#ebc7b8;
+  --tertiaryColorLight20:#f6e6e0;
+  --tertiaryColorLight30:#ffffff;
+  --tertiaryColorLight40:#ffffff;
+  --tertiaryColorLight50:#ffffff;
+  --tertiaryColorLight60:#ffffff;
+  --tertiaryColorLight70:#ffffff;
+  --tertiaryColorLight80:#ffffff;
+  --tertiaryColorLight90:#ffffff;
+  --textColor:#041B1B;
+  --textColorDark10:#000000;
+  --textColorDark20:#000000;
+  --textColorDark30:#000000;
+  --textColorDark40:#000000;
+  --textColorDark50:#000000;
+  --textColorDark60:#000000;
+  --textColorDark70:#000000;
+  --textColorDark80:#000000;
+  --textColorDark90:#000000;
+  --textColorLight10:#0b4747;
+  --textColorLight20:#117474;
+  --textColorLight30:#18a0a0;
+  --textColorLight40:#1ecdcd;
+  --textColorLight50:#3ce2e2;
+  --textColorLight60:#68e9e9;
+  --textColorLight70:#95efef;
+  --textColorLight80:#c1f6f6;
+  --textColorLight90:#eefcfc;
+}
+```
+### current theme observable
+
+### theme directive 
+
+## app initializer
+
+
+
+``` scss 
+:root {
+    --primaryColor: #129490;
+    --secondaryColor: #70B77E;
+    --tertiaryColor: #E0A890;
+    --textColor: #041B1B;
+}
+```
+
