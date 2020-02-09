@@ -50,7 +50,7 @@ export class ThemesService {
   private isColor(name: string): boolean {
     return name && name.toLowerCase().endsWith('color');
   }
-  public scaffoldColorVariants(name: string, color: string) {
+  private scaffoldColorVariants(name: string, color: string) {
     const c = tinycolor(color);
     for (let i = 1; i < 10; i++) {
       const lighter = c.clone().lighten(10 * i);
@@ -74,6 +74,12 @@ export class ThemesService {
     return {bodyFontFamily, headerFontFamily};
 
   }
+
+  /**
+   * Returns a random theme object.
+   * Normally you would fetch a theme from some backend endpoint.
+   * @returns a random theme
+   */
   public generateRandomTheme(): Theme {
     let c = tinycolor(internet.color());
     while (c.getLuminance() < 0.3) {

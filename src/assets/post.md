@@ -2,13 +2,14 @@
 
 - [Implementing white labeling with angular and css variables](#implementing-white-labeling-with-angular-and-css-variables)
   - [Introduction](#introduction)
+  - [Difference between css and sass variables](#difference-between-css-and-sass-variables)
   - [Time to refactor](#time-to-refactor)
   - [Fetching theme details from the backend](#fetching-theme-details-from-the-backend)
   - [Implementing the Angular service that applies the themes.](#implementing-the-angular-service-that-applies-the-themes)
     - [Apply theme](#apply-theme)
-      - [Scaffold light, dark and other variants](#scaffold-light-dark-and-other-variants)
-    - [Subscribing to the current theme observable to listen for changes](#subscribing-to-the-current-theme-observable-to-listen-for-changes)
-    - [Theme directive](#theme-directive)
+    - [Scaffold light, dark and other variants](#scaffold-light-dark-and-other-variants)
+  - [Subscribing to the current theme observable to listen for changes](#subscribing-to-the-current-theme-observable-to-listen-for-changes)
+  - [Theme directive](#theme-directive)
   - [APP_INITIALIZER](#appinitializer)
 
 
@@ -49,7 +50,27 @@ Your theme sass file may look something like __this__:
 If you planned from the start to support white labeling then you probably wrote all the 
 style rules using the relevant sass variables that you will later override.
 
-After implementing more than 2 or 3 themes you will start noticing that this can get really messy.
+After implementing more than 2 or 3 themes you will start noticing that this can get really messy. You will also notice that your css will have a lot of redundant code and the more themes you have, the more css code you will bundle with your application. Also, you will be loading all the themes css even though you will only use 1 theme.
+
+Needless to say, this will not scale if we plan to support 
+
+## Difference between css and sass variables
+
+Sass variables get resolved at compile time, once your styles are compiled into CSS, they are replaced with actual values which you can no longer change at runtime. 
+
+On the other hand, CSS variables can be changed at runtime after your page is loaded.  You could set a variable to a certain value as in the following snippet:
+
+``` typescript 
+document.documentElement.style.setProperty('--myCssVariable', '#9efefe');
+```
+And your styles should reference the variable in some rules:
+
+```scss 
+.some-class {
+  color: var(--myCssVariable);
+}
+```
+Once you set the css variable to some value, your view should immediately 
 
 ## Time to refactor
 
@@ -60,15 +81,15 @@ After implementing more than 2 or 3 themes you will start noticing that this can
 
 ### Apply theme
 
-``` ts 
+``` typescript
 private registerCssVar(name: string, value: string): void {
     document.documentElement.style.setProperty(name, value);
 }
 ```
 
-#### Scaffold light, dark and other variants
+### Scaffold light, dark and other variants
 
-``` ts 
+``` typescript
 public generateShades(name: string, color: string) {
   const c = tinycolor(color);
   for (let i = 1; i < 10; i++) {
@@ -163,13 +184,54 @@ public generateShades(name: string, color: string) {
   --textColorLight90:#eefcfc;
 }
 ```
-### Subscribing to the current theme observable to listen for changes
+## Subscribing to the current theme observable to listen for changes
 
-### Theme directive 
+## Theme directive 
 
 ## APP_INITIALIZER
 
+```ts 
+@Injectable({
+  providedIn: 'root'
+})
+export class ThemesInitService {
 
+  constructor(private themes: ThemesService) { }
+
+  public init(): Promise<void> {
+    // We need to return a promise
+    return new Promise((resolve, reject) => {
+      console.log('Initializing themes');
+
+      this.themes.setCurrentTheme(DEFAULT_THEME);
+      resolve();
+    });
+  }
+}
+```
+
+```typescript
+export const initThemes = (themes: ThemesInitService) => {
+  return (): Promise<any> => themes.init();
+}
+```
+
+```ts
+ {
+  // @NgModule declaration
+ 
+  providers: [
+    ThemesService,
+    {
+      provide: APP_INITIALIZER,
+      useFactory: initThemes,
+      deps: [ThemesInitService],
+      multi: true
+    }
+  ],
+
+ }
+```
 
 ``` scss 
 :root {
