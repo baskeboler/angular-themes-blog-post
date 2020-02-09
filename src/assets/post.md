@@ -1,19 +1,19 @@
-# Implementing white labeling with angular and css variables
 
-- [Implementing white labeling with angular and css variables](#implementing-white-labeling-with-angular-and-css-variables)
-  - [Introduction](#introduction)
-  - [Difference between css and sass variables](#difference-between-css-and-sass-variables)
-  - [Time to refactor](#time-to-refactor)
-  - [Fetching theme details from the backend](#fetching-theme-details-from-the-backend)
-  - [Implementing the Angular service that applies the themes.](#implementing-the-angular-service-that-applies-the-themes)
-    - [Apply theme](#apply-theme)
-    - [Scaffold light, dark and other variants](#scaffold-light-dark-and-other-variants)
-  - [Subscribing to the current theme observable to listen for changes](#subscribing-to-the-current-theme-observable-to-listen-for-changes)
-  - [Theme directive](#theme-directive)
-  - [APP_INITIALIZER](#appinitializer)
+- [Introduction](#introduction)
+- [Difference between css and sass variables](#difference-between-css-and-sass-variables)
+- [Time to refactor](#time-to-refactor)
+  - [Our theme model](#our-theme-model)
+- [Fetching theme details from the backend](#fetching-theme-details-from-the-backend)
+- [Implementing the Angular service that applies the themes.](#implementing-the-angular-service-that-applies-the-themes)
+  - [Apply theme](#apply-theme)
+  - [Scaffold light, dark and other variants](#scaffold-light-dark-and-other-variants)
+- [Subscribing to the current theme observable to listen for changes](#subscribing-to-the-current-theme-observable-to-listen-for-changes)
+- [Theme directive](#theme-directive)
+- [APP_INITIALIZER](#appinitializer)
+- [References](#references)
 
 
-## Introduction
+# Introduction
 
 A very common task in web development is doing white labeling. Usually you start off adding a theme or two to your application, you set some wrapper class name in a container element and you add a block of sass in your styles and customize under that class.
 
@@ -54,7 +54,7 @@ After implementing more than 2 or 3 themes you will start noticing that this can
 
 Needless to say, this will not scale if we plan to support 
 
-## Difference between css and sass variables
+# Difference between css and sass variables
 
 Sass variables get resolved at compile time, once your styles are compiled into CSS, they are replaced with actual values which you can no longer change at runtime. 
 
@@ -72,14 +72,41 @@ And your styles should reference the variable in some rules:
 ```
 Once you set the css variable to some value, your view should immediately 
 
-## Time to refactor
+# Time to refactor
 
+- Remove all theme wrapper css code blocks. 
+- Replace all preprocessor variables with css vars in the form `var(--myVarName)`
+  - Sometimes you can do something like this:
+    ```scss 
+    $mySassVariable: var(--myCssVariable);
+    ```
+    This will not work if that SASS variable is later used with SASS functions (for example the `mix()` color function), but if you aren't passing that var through functions that expect a resolved value you should be ok. 
+- If you do make use of SASS color functions to obtain darker or lighter variant of your main colors, you may generate those from javascript at the time you load your theme.
+  - I am using a small library called [tinycolor](https://github.com/bgrins/TinyColor) in my example which is very simple to use 
+## Our theme model 
 
-## Fetching theme details from the backend
+There are some things to note about themes, as part of our themes we will customize:
+- CSS styles:
+  - mostly made up of our styles referring to CSS vars that we will include in some entity. 
+- Content
+  - Things we can't customize with CSS, for example: titles, custom footers, hiding/showing elements based on the theme, etc.
 
-## Implementing the Angular service that applies the themes.
+Here is an example theme model for demo application:
 
-### Apply theme
+```ts
+export interface Theme {
+  name: string;
+  brandName: string;
+  enableGithubLink?: boolean;
+  brandLogo?: string;
+  cssRules: { [key: string]: string };
+}
+```
+# Fetching theme details from the backend
+
+# Implementing the Angular service that applies the themes.
+
+## Apply theme
 
 ``` typescript
 private registerCssVar(name: string, value: string): void {
@@ -87,19 +114,38 @@ private registerCssVar(name: string, value: string): void {
 }
 ```
 
-### Scaffold light, dark and other variants
+## Scaffold light, dark and other variants
 
 ``` typescript
-public generateShades(name: string, color: string) {
-  const c = tinycolor(color);
-  for (let i = 1; i < 10; i++) {
-    const lighter = c.clone().lighten(10 * i);
-    const darker = c.clone().darken(10 * i);
-
-    this.registerCssVar(`${name}Dark${i*10}`, darker.toHexString());
-    this.registerCssVar(`${name}Light${i*10}`, lighter.toHexString());
+  
+  /**
+   * Generates a range of darker, ligher and desaturated 
+   * variants of a color with variable name `name`, 
+   * from 10% to 90%, stepping by 10%.
+   * Generated variables will be named `${name}{Light|Dark|Desaturated}[10-90]`.
+   * Also generates a complement and a foreground color to be used
+   * when using the base color as background.
+   * @param name name of the base color variable
+   * @param color base color
+   */
+  private scaffoldColorVariants(name: string, color: string) {
+    const c = tinycolor(color);
+    for (let i = 1; i < 10; i++) {
+      const lighter = c.clone().lighten(10 * i);
+      const darker = c.clone().darken(10 * i);
+      const desaturated = c.clone().desaturate(10 * i);
+      this.registerCssVar(`${name}Dark${i * 10}`, darker.toHexString());
+      this.registerCssVar(`${name}Light${i * 10}`, lighter.toHexString());
+      this.registerCssVar(`${name}Desaturated${i * 10}`, desaturated.toHexString());
+    }
+    const complement = c.clone().complement().toHexString();
+    this.registerCssVar(`${name}Complement`, complement);
+    let fgVariant = '#ffffff';
+    if (c.isLight()) {
+      fgVariant = '#000000';
+    }
+    this.registerCssVar(`${name}Foreground`, fgVariant);
   }
-}
 ```
 
 
@@ -184,11 +230,11 @@ public generateShades(name: string, color: string) {
   --textColorLight90:#eefcfc;
 }
 ```
-## Subscribing to the current theme observable to listen for changes
+# Subscribing to the current theme observable to listen for changes
 
-## Theme directive 
+# Theme directive 
 
-## APP_INITIALIZER
+# APP_INITIALIZER
 
 ```ts 
 @Injectable({
@@ -233,12 +279,7 @@ export const initThemes = (themes: ThemesInitService) => {
  }
 ```
 
-``` scss 
-:root {
-    --primaryColor: #129490;
-    --secondaryColor: #70B77E;
-    --tertiaryColor: #E0A890;
-    --textColor: #041B1B;
-}
-```
+# References
 
+- [https://developer.mozilla.org/en-US/docs/Web/CSS/Using_CSS_custom_properties](https://developer.mozilla.org/en-US/docs/Web/CSS/Using_CSS_custom_properties)
+- [css-tricks post about the differences between css and preprocessor variables](https://css-tricks.com/difference-between-types-of-css-variables/)

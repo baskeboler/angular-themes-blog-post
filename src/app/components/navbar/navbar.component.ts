@@ -11,7 +11,8 @@ import { Theme } from 'src/app/models/theme';
 export class NavbarComponent implements OnInit, OnDestroy {
 
   brand: Observable<string>; // = 'Default brand';
-  logo: Observable<string>
+  logo: Observable<string>;
+  githubLinkEnabled: Observable<boolean>;
   themeSubscription: Subscription;
   constructor(private themes: ThemesService) { }
 
@@ -25,8 +26,12 @@ export class NavbarComponent implements OnInit, OnDestroy {
       .pipe(
         map(t => t ? t.brandLogo : 'unknown')
       );
+    this.githubLinkEnabled = this.themes.getCurrentTheme()
+    .pipe(
+      map((t: Theme) => t && t.enableGithubLink ? t.enableGithubLink : false)
+    );
 
-    this.themeSubscription = combineLatest([this.brand, this.logo])
+    this.themeSubscription = combineLatest([this.brand, this.logo, this.githubLinkEnabled])
       .subscribe(([b]) => {
         console.log('theme has changed, brand = ' + b);
 

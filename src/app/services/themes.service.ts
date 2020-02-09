@@ -50,6 +50,17 @@ export class ThemesService {
   private isColor(name: string): boolean {
     return name && name.toLowerCase().endsWith('color');
   }
+
+  /**
+   * Generates a range of darker, ligher and desaturated
+   * variants of a color with variable name `name`,
+   * from 10% to 90%, stepping by 10%.
+   * Generated variables will be named `${name}{Light|Dark|Desaturated}[10-90]`
+   * Also generates a complement and a foreground color to be used
+   * when using the base color as background.
+   * @param name name of the base color variable
+   * @param color base color
+   */
   private scaffoldColorVariants(name: string, color: string) {
     const c = tinycolor(color);
     for (let i = 1; i < 10; i++) {
@@ -87,7 +98,7 @@ export class ThemesService {
     }
     const varNames = ['primaryColor', 'secondaryColor', 'tertiaryColor'];
 
-    let cssRules: StringKVMap = c.triad()
+    const cssRules: StringKVMap = c.triad()
       .map(c => c.toHexString())
       .reduce((res, v, i) => {
         res[varNames[i]] = v;
@@ -95,11 +106,12 @@ export class ThemesService {
       }, this.randomFontStack());
 
 
-    let t = {
+    const t = {
       brandName: company.companyName(),
       brandLogo: this.san.bypassSecurityTrustUrl(image.avatar()),
       name: lorem.slug(),
-      cssRules: cssRules
+      enableGithubLink: _.sample([true, false]),
+      cssRules
     } as Theme;
 
     return t;

@@ -14,7 +14,7 @@ export class ThemesInitService {
     return new Promise((resolve, reject) => {
       console.log('Initializing themes');
 
-      this.themes.setCurrentTheme(DEFAULT_THEME);
+      this.themes.setCurrentTheme(ALTERNATE_THEME);
       resolve();
     });
   }

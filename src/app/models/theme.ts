@@ -1,25 +1,27 @@
 export interface Theme {
   name: string;
   brandName: string;
+  enableGithubLink?: boolean;
   brandLogo?: string;
   cssRules: { [key: string]: string };
 }
 
 export const FONT_FAMILIES = [
-  "'Space Mono', monospace",
-  "'Concert One', cursive",
-  "'Kavoon', cursive",
-  "'Fruktur', cursive",
-  "'Tillana', cursive",
-  "'Asul', sans-serif",
-  "'Alike Angular', serif",
+  "'Cormorant Garamond', serif",
+  "'Proza Libre', sans-serif",
+  "'Libre Franklin', sans-serif",
+  "'Libre Baskerville', serif",
+  "'Trirong', serif",
+  "'Rubik', sans-serif",
   "'Work Sans', sans-serif",
-  "'Neuton', serif",
-  "'Eczar', serif"
-]
+  "'Taviraj', serif",
+  "'Eczar', serif",
+  "'Gentium Basic', serif"
+  ]
 export const DEFAULT_THEME = {
   name: 'default-theme',
   brandName: 'SuperBrand',
+  enableGithubLink: true,
   brandLogo: '//getbootstrap.com/docs/4.0/assets/brand/bootstrap-solid.svg', //'//upload.wikimedia.org/wikipedia/commons/thumb/e/e1/Hacker_Inside_Logo.svg/1200px-Hacker_Inside_Logo.svg.png',
   cssRules: {
     primaryColor: '#129490',
@@ -34,6 +36,7 @@ export const DEFAULT_THEME = {
 export const ALTERNATE_THEME = {
 name: 'alternate-theme',
   brandName: 'Another Brand',
+  enableGithubLink: true,
   brandLogo: '//upload.wikimedia.org/wikipedia/commons/thumb/e/e1/Hacker_Inside_Logo.svg/1200px-Hacker_Inside_Logo.svg.png',
   cssRules: {
     primaryColor: '#856A5D',

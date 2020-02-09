@@ -16,6 +16,10 @@
       <li class="nav-item" routerLinkActive="active">
         <a class="nav-link" [routerLink]="['blog-post']" >Blog Post</a>
       </li>
+
+      <li class="nav-item" *ngIf="githubLinkEnabled | async">
+        <a class="nav-link" href="//github.com/baskeboler/angular-themes-blog-post" >Github</a>
+      </li>
       <li class="nav-item">
         <a class="nav-link disabled" href="#">Disabled</a>
       </li>
