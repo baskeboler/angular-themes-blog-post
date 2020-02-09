@@ -15,8 +15,6 @@ jobs:
         echo Add other actions to build,
         echo test, and deploy your project.
         npm run test:ci
-    - name: Save artifacts
-      uses: actions/upload-artifact@v1
+    - uses: codecov/codecov-action@v1
       with:
-        name: coverage
-        path: coverage/angular-themes-blog-post
+        token: ${{ secrets.CODECOV_TOKEN }} #required
