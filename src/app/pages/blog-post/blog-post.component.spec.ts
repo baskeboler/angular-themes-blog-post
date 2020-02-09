@@ -1,6 +1,9 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { BlogPostComponent } from './blog-post.component';
+import { MarkdownModule } from 'ngx-markdown';
+import { HttpClientTestingModule, } from '@angular/common/http/testing';
+import { HttpClient } from '@angular/common/http';
 
 describe('BlogPostComponent', () => {
   let component: BlogPostComponent;
@@ -8,9 +11,12 @@ describe('BlogPostComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ BlogPostComponent ]
-    })
-    .compileComponents();
+      declarations: [BlogPostComponent],
+      imports: [
+        MarkdownModule.forRoot({ loader: HttpClient }),
+        HttpClientTestingModule
+      ]
+    }).compileComponents();
   }));
 
   beforeEach(() => {
