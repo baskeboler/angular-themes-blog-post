@@ -1,4 +1,6 @@
 [![Gitpod Ready-to-Code](https://img.shields.io/badge/Gitpod-Ready--to--Code-blue?logo=gitpod)](https://gitpod.io/#https://github.com/baskeboler/angular-themes-blog-post) 
+[![codecov](https://codecov.io/gh/baskeboler/angular-themes-blog-post/branch/master/graph/badge.svg)](https://codecov.io/gh/baskeboler/angular-themes-blog-post)
+
 
 # Angular Themes Blog Post
 
