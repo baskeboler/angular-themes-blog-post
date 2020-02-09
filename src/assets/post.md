@@ -82,7 +82,11 @@ Once you set the css variable to some value, your view should immediately
     ```
     This will not work if that SASS variable is later used with SASS functions (for example the `mix()` color function), but if you aren't passing that var through functions that expect a resolved value you should be ok. 
 - If you do make use of SASS color functions to obtain darker or lighter variant of your main colors, you may generate those from javascript at the time you load your theme.
-  - I am using a small library called [tinycolor](https://github.com/bgrins/TinyColor) in my example which is very simple to use 
+  - I am using a small library called [tinycolor](https://github.com/bgrins/TinyColor) in my example which is very simple to use. 
+  - The idea is to generate a range of light and dark colors for each of our base palette colors that are defined in our theme. 
+    - For example, if we have a variable called `--primaryColor`, then we will also have: `--primaryColorDark10, --primaryColorDark20, ..., --primaryColorDark90, --primaryColorLight10, ..., --primaryColorLight90`, and so on. 
+
+
 ## Our theme model 
 
 There are some things to note about themes, as part of our themes we will customize:
@@ -107,6 +111,10 @@ export interface Theme {
 # Implementing the Angular service that applies the themes.
 
 ## Apply theme
+
+Applying the theme is pretty straight forward, we push it into our theme subject which the service is already subscribed to and when the subscription get notified we iterate through the `cssRules` property of the theme and map the keys to variable names and set the mapped value as a custom property for that name. 
+
+The following snippet registers a var:
 
 ``` typescript
 private registerCssVar(name: string, value: string): void {
@@ -148,93 +156,44 @@ private registerCssVar(name: string, value: string): void {
   }
 ```
 
+And here is the `applyTheme()` method: 
 
-``` scss 
-// variables generated at runtime when theme is loaded
-:root {
-  --primaryColor:#129490;
-  --primaryColorDark10:#0c6664;
-  --primaryColorDark20:#073937;
-  --primaryColorDark30:#010c0b;
-  --primaryColorDark40:#000000;
-  --primaryColorDark50:#000000;
-  --primaryColorDark60:#000000;
-  --primaryColorDark70:#000000;
-  --primaryColorDark80:#000000;
-  --primaryColorDark90:#000000;
-  --primaryColorLight10:#18c1bc;
-  --primaryColorLight20:#27e5df;
-  --primaryColorLight30:#55eae6;
-  --primaryColorLight40:#82f0ec;
-  --primaryColorLight50:#b0f5f3;
-  --primaryColorLight60:#ddfbfa;
-  --primaryColorLight70:#ffffff;
-  --primaryColorLight80:#ffffff;
-  --primaryColorLight90:#ffffff;
-  --secondaryColor:#70B77E;
-  --secondaryColorDark10:#52a262;
-  --secondaryColorDark20:#41804d;
-  --secondaryColorDark30:#305e39;
-  --secondaryColorDark40:#1e3d24;
-  --secondaryColorDark50:#0d1b10;
-  --secondaryColorDark60:#000000;
-  --secondaryColorDark70:#000000;
-  --secondaryColorDark80:#000000;
-  --secondaryColorDark90:#000000;
-  --secondaryColorLight10:#92c89d;
-  --secondaryColorLight20:#b4d9bb;
-  --secondaryColorLight30:#d6eada;
-  --secondaryColorLight40:#f8fbf8;
-  --secondaryColorLight50:#ffffff;
-  --secondaryColorLight60:#ffffff;
-  --secondaryColorLight70:#ffffff;
-  --secondaryColorLight80:#ffffff;
-  --secondaryColorLight90:#ffffff;
-  --tertiaryColor:#E0A890;
-  --tertiaryColorDark10:#d58968;
-  --tertiaryColorDark20:#ca6940;
-  --tertiaryColorDark30:#a8532f;
-  --tertiaryColorDark40:#804024;
-  --tertiaryColorDark50:#582c19;
-  --tertiaryColorDark60:#30180e;
-  --tertiaryColorDark70:#090402;
-  --tertiaryColorDark80:#000000;
-  --tertiaryColorDark90:#000000;
-  --tertiaryColorLight10:#ebc7b8;
-  --tertiaryColorLight20:#f6e6e0;
-  --tertiaryColorLight30:#ffffff;
-  --tertiaryColorLight40:#ffffff;
-  --tertiaryColorLight50:#ffffff;
-  --tertiaryColorLight60:#ffffff;
-  --tertiaryColorLight70:#ffffff;
-  --tertiaryColorLight80:#ffffff;
-  --tertiaryColorLight90:#ffffff;
-  --textColor:#041B1B;
-  --textColorDark10:#000000;
-  --textColorDark20:#000000;
-  --textColorDark30:#000000;
-  --textColorDark40:#000000;
-  --textColorDark50:#000000;
-  --textColorDark60:#000000;
-  --textColorDark70:#000000;
-  --textColorDark80:#000000;
-  --textColorDark90:#000000;
-  --textColorLight10:#0b4747;
-  --textColorLight20:#117474;
-  --textColorLight30:#18a0a0;
-  --textColorLight40:#1ecdcd;
-  --textColorLight50:#3ce2e2;
-  --textColorLight60:#68e9e9;
-  --textColorLight70:#95efef;
-  --textColorLight80:#c1f6f6;
-  --textColorLight90:#eefcfc;
-}
+```ts
+/**
+   * Applies the theme to document.documentElement.style scope.
+   * Also scaffold all color variants for each color.
+   * @param theme the theme object
+   */
+  private applyTheme(theme: Theme): void {
+    Object.keys(theme.cssRules).forEach(rule => {
+      const cssVarName = `--${rule}`;
+      const cssRule = theme.cssRules[rule];
+      this.registerCssVar(cssVarName, cssRule);
+      if (this.isColor(cssVarName)) {
+        this.scaffoldColorVariants(cssVarName, cssRule);
+      }
+    });
+  }
 ```
+
 # Subscribing to the current theme observable to listen for changes
+
+```ts
+this.themes.getCurrentTheme().subscribe((t: Theme) => {
+  // theme has changed, do something to your views
+});
+```
 
 # Theme directive 
 
+In our example we are setting all the custom properties in `document.documentElement.style`, this is global scope and will affect all components, we might want to apply themes just to the scope of a single component and implementing a directive for this seems like the natural way to get this done. 
+
 # APP_INITIALIZER
+
+Here is a trick we can use to load our theme at application startup to avoid a theme switch when the views are already being displayed.
+
+We create an Initialization service that has the ThemesService injected and has a method that returns a promise. 
+
 
 ```ts 
 @Injectable({
@@ -256,11 +215,16 @@ export class ThemesInitService {
 }
 ```
 
+On the module declaration we declare a factory function that returns a function that, when called, will call the `init()` method of the service.
+
 ```typescript
 export const initThemes = (themes: ThemesInitService) => {
   return (): Promise<any> => themes.init();
 }
 ```
+
+In our module declaration, we include a new provider that provides `APP_INITIALIZER` and uses the factory function above with `useFactory`. Don't forget to set `multi` to `true`. Include the `ThemesService` in the  `deps` array so it will get injected in the factory function and we're good to go!
+
 
 ```ts
  {
@@ -275,11 +239,12 @@ export const initThemes = (themes: ThemesInitService) => {
       multi: true
     }
   ],
-
  }
 ```
 
 # References
 
-- [https://developer.mozilla.org/en-US/docs/Web/CSS/Using_CSS_custom_properties](https://developer.mozilla.org/en-US/docs/Web/CSS/Using_CSS_custom_properties)
-- [css-tricks post about the differences between css and preprocessor variables](https://css-tricks.com/difference-between-types-of-css-variables/)
+- [My example code - Github repo](https://github.com/baskeboler/angular-themes-blog-post)
+- [Mozilla devs - Using CSS custom properties](https://developer.mozilla.org/en-US/docs/Web/CSS/Using_CSS_custom_properties)
+- [css-tricks - post about the differences between css and preprocessor variables](https://css-tricks.com/difference-between-types-of-css-variables/)
+- [tinycolor - color manipulation library](https://github.com/bgrins/TinyColor)

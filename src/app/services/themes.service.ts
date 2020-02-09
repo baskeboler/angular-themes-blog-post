@@ -29,10 +29,14 @@ export class ThemesService {
   public getCurrentTheme(): Observable<Theme> {
     return this.currentTheme.asObservable();
   }
+
+  /**
+   * Applies the theme to document.documentElement.style scope.
+   * Also scaffold all color variants for each color.
+   * @param theme the theme object
+   */
   private applyTheme(theme: Theme): void {
-
     Object.keys(theme.cssRules).forEach(rule => {
-
       const cssVarName = `--${rule}`;
       const cssRule = theme.cssRules[rule];
       this.registerCssVar(cssVarName, cssRule);
@@ -41,6 +45,7 @@ export class ThemesService {
       }
     });
   }
+
   private registerCssVar(name: string, value: string): void {
     // console.log(`registering ${name} = ${value}`);
 
