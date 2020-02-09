@@ -1,22 +1,33 @@
-# implementing white labeling with angular and css variables
+# Implementing white labeling with angular and css variables
 
-## introduction
+- [Implementing white labeling with angular and css variables](#implementing-white-labeling-with-angular-and-css-variables)
+  - [Introduction](#introduction)
+  - [Time to refactor](#time-to-refactor)
+  - [Fetching theme details from the backend](#fetching-theme-details-from-the-backend)
+  - [Implementing the Angular service that applies the themes.](#implementing-the-angular-service-that-applies-the-themes)
+    - [Apply theme](#apply-theme)
+      - [Scaffold light, dark and other variants](#scaffold-light-dark-and-other-variants)
+    - [Subscribing to the current theme observable to listen for changes](#subscribing-to-the-current-theme-observable-to-listen-for-changes)
+    - [Theme directive](#theme-directive)
+  - [APP_INITIALIZER](#appinitializer)
+
+
+## Introduction
 
 A very common task in web development is doing white labeling. Usually you start off adding a theme or two to your application, you set some wrapper class name in a container element and you add a block of sass in your styles and customize under that class.
 
 
 
-``` html
+```html
 <div class="container my-theme">
 
   <!-- my app content -->
 </div>
-
 ```
 
-Your theme sass file: 
+Your theme sass file may look something like __this__: 
 
-``` scss
+```scss
 // .. some imports  
 
 .my-theme {
@@ -40,15 +51,14 @@ style rules using the relevant sass variables that you will later override.
 
 After implementing more than 2 or 3 themes you will start noticing that this can get really messy.
 
+## Time to refactor
 
-## time to refactor
 
+## Fetching theme details from the backend
 
-## fetching theme details from the backend
+## Implementing the Angular service that applies the themes.
 
-## angular service
-
-### apply theme
+### Apply theme
 
 ``` ts 
 private registerCssVar(name: string, value: string): void {
@@ -56,7 +66,7 @@ private registerCssVar(name: string, value: string): void {
 }
 ```
 
-#### scaffold light and dark variants
+#### Scaffold light, dark and other variants
 
 ``` ts 
 public generateShades(name: string, color: string) {
@@ -153,11 +163,11 @@ public generateShades(name: string, color: string) {
   --textColorLight90:#eefcfc;
 }
 ```
-### current theme observable
+### Subscribing to the current theme observable to listen for changes
 
-### theme directive 
+### Theme directive 
 
-## app initializer
+## APP_INITIALIZER
 
 
 

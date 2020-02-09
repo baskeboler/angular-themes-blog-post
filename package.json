@@ -20,6 +20,7 @@
     "@angular/platform-browser-dynamic": "~9.0.0",
     "@angular/router": "~9.0.0",
     "@types/faker": "^4.1.9",
+    "@types/lodash": "^4.14.149",
     "@types/tinycolor2": "^1.4.2",
     "bootstrap": "^4.4.1",
     "faker": "^4.1.0",

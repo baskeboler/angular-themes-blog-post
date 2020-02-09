@@ -1,22 +1,56 @@
 /* You can add global styles to this file, and also import other style files */
 
-:root {
-    --primaryColor: #129490;
-    --secondaryColor: #70B77E;
-    --tertiaryColor: #E0A890;
-    --textColor: #041B1B;
-}
+@import 'bootstrap';
+@import url('https://fonts.googleapis.com/css?family=Alike+Angular|Asul|Concert+One|Eczar|Fruktur|Kavoon|Neuton|Space+Mono|Tillana|Work+Sans&display=swap');
 
 body {
     background-color: var(--primaryColorLight40);
-    color: var(--textColor);
-
+    color: var(--primaryColorDark20);
+    font-family: var(--bodyFontFamily);
     .bg-light {
         background-color: var(--primaryColorLight50) !important;
     }
 
+    @mixin btn-settings($bg, $fg, $bg-hover) {
+      background-color: $bg;
+      border-color: $bg;
+      color: $fg;
+      &.active, &:focus, &:hover {
+            background-color: $bg-hover;
+            border-color: $bg-hover;
+      }
+    }
+
+    @mixin btn-outline-settings($bg, $fg, $bg-hover) {
+      border-color: $bg;
+      color: $bg;
+      &.active, &:focus, &:hover {
+            background-color: $bg;
+            border-color: $bg;
+            color: $fg;
+      }
+    }
+
+    a, button, input[type=submit] {
+      &.btn {
+        &.btn-primary {
+          @include btn-settings(var(--primaryColor), var(--primaryColorForeground), var(--primaryColorDark10));
+        }
+        &.btn-secondary {
+          @include btn-settings(var(--secondaryColor), var(--secondaryColorForeground), var(--secondaryColorDark10));
+        }
+        &.btn-tertiary {
+          @include btn-settings(var(--tertiaryColor), var(--tertiaryColorForeground), var(--tertiaryColorDark10));
+        }
+
+        &.btn-outline-secondary {
+          @include btn-outline-settings(var(--secondaryColor), var(--secondaryColorForeground), var(--secondaryColorDark10));
+        }
+      }
+    }
     .navbar {
 
+        box-shadow: 0px 5px 20px 1px var(--secondaryColorLight10);
         &.navbar-light {
 
             a {
@@ -43,17 +77,17 @@ body {
     h2,
     h3,
     h4,
-    h5 {
-        color: var(--textColorLight10);
+    h5,
+    .page-title {
+      font-family: var(--headerFontFamily);
+        color: var(--primaryColorDark30);
     }
 
     .container {
-        background-color: var(--secondaryColorLight20);
-        border-left: 3px var(--primaryColor) solid;
-        border-right: 3px var(--primaryColor) solid;
+        background-color: var(--secondaryColorLight30);
+        // border-left: 3px var(--primaryColor) solid;
+        // border-right: 3px var(--primaryColor) solid;
+        box-shadow: 0 0 20px 3px var(--primaryColor);
     }
 
-    .page-title {
-        color: var(--textColorLight20);
-    }
 }

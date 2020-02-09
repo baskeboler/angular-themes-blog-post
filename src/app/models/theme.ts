@@ -5,7 +5,18 @@ export interface Theme {
   cssRules: { [key: string]: string };
 }
 
-
+export const FONT_FAMILIES = [
+  "'Space Mono', monospace",
+  "'Concert One', cursive",
+  "'Kavoon', cursive",
+  "'Fruktur', cursive",
+  "'Tillana', cursive",
+  "'Asul', sans-serif",
+  "'Alike Angular', serif",
+  "'Work Sans', sans-serif",
+  "'Neuton', serif",
+  "'Eczar', serif"
+]
 export const DEFAULT_THEME = {
   name: 'default-theme',
   brandName: 'SuperBrand',
@@ -14,7 +25,9 @@ export const DEFAULT_THEME = {
     primaryColor: '#129490',
     secondaryColor: '#70B77E',
     tertiaryColor: '#E0A890',
-    textColor: '#041B1B'
+    textColor: '#041B1B',
+    headerFontFamily: FONT_FAMILIES[0],
+    bodyFontFamily: FONT_FAMILIES[1]
   }
 } as Theme;
 
@@ -26,7 +39,8 @@ name: 'alternate-theme',
     primaryColor: '#856A5D',
     secondaryColor: '#CCC9E7',
     tertiaryColor: '#6C6F7D',
-    textColor: '#312722'
+    textColor: '#312722',
+    headerFontFamily: FONT_FAMILIES[2],
+    bodyFontFamily: FONT_FAMILIES[3]
   }
-
 } as Theme;

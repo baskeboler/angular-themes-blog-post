@@ -1,6 +1,8 @@
 [![Gitpod Ready-to-Code](https://img.shields.io/badge/Gitpod-Ready--to--Code-blue?logo=gitpod)](https://gitpod.io/#https://github.com/baskeboler/angular-themes-blog-post) 
 
-# AngularThemesBlogPost
+# Angular Themes Blog Post
+
+This is a demo project for a blog post discussing a possible implementation of a theming system with angular and css variables. You may read the blog post [here](post.md). 
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 9.0.0.
 
