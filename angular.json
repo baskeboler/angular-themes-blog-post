@@ -28,11 +28,17 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.scss"
+              "src/styles.scss",
+              "node_modules/prismjs/themes/prism-okaidia.css"
             ],
             "scripts": [
               "node_modules/jquery/dist/jquery.js",
-              "node_modules/bootstrap/dist/js/bootstrap.js"
+              "node_modules/bootstrap/dist/js/bootstrap.js",
+              "node_modules/marked/lib/marked.js",
+
+ "node_modules/prismjs/prism.js",
+ "node_modules/prismjs/components/prism-typescript.min.js",
+ "node_modules/prismjs/components/prism-scss.min.js"
             ]
           },
           "configurations": {

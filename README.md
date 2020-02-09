@@ -4,7 +4,7 @@
 
 # Angular Themes Blog Post
 
-This is a demo project for a blog post discussing a possible implementation of a theming system with angular and css variables. You may read the blog post [here](post.md). 
+This is a demo project for a blog post discussing a possible implementation of a theming system with angular and css variables. You may read the blog post [here](src/assets/post.md). 
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 9.0.0.
 

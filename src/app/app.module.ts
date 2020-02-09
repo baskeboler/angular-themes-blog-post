@@ -7,7 +7,9 @@ import { ThemesService } from './services/themes.service';
 import { HomeComponent } from './pages/home/home.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { ThemesInitService } from './services/themes-init.service';
-
+import { MarkdownModule } from "ngx-markdown";
+import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { BlogPostComponent } from './pages/blog-post/blog-post.component';
 
 export const initThemes = (themes: ThemesInitService) => {
   return (): Promise<any> => themes.init();
@@ -23,11 +25,16 @@ export const initThemes = (themes: ThemesInitService) => {
   declarations: [
     AppComponent,
     HomeComponent,
-    NavbarComponent
+    NavbarComponent,
+    BlogPostComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    MarkdownModule.forRoot({
+      loader: HttpClient
+    }),
+    HttpClientModule
   ],
   providers: [
     ThemesService,
