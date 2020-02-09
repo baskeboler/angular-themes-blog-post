@@ -1,6 +1,9 @@
 import { TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AppComponent } from './app.component';
+import { HomeComponent } from './pages/home/home.component';
+import { NavbarComponent } from './components/navbar/navbar.component';
+import { ThemesService } from './services/themes.service';
 
 describe('AppComponent', () => {
   beforeEach(async(() => {
@@ -8,8 +11,11 @@ describe('AppComponent', () => {
       imports: [
         RouterTestingModule
       ],
+      providers: [ThemesService],
       declarations: [
-        AppComponent
+        AppComponent,
+        HomeComponent,
+        NavbarComponent
       ],
     }).compileComponents();
   }));
@@ -26,10 +32,5 @@ describe('AppComponent', () => {
     expect(app.title).toEqual('angular-themes-blog-post');
   });
 
-  it('should render title', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    fixture.detectChanges();
-    const compiled = fixture.nativeElement;
-    expect(compiled.querySelector('.content span').textContent).toContain('angular-themes-blog-post app is running!');
-  });
+
 });

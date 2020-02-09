@@ -18,12 +18,12 @@ export class NavbarComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.brand = this.themes.getCurrentTheme()
       .pipe(
-        map((t: Theme) => t.brandName)
+        map((t: Theme) => t ? t.brandName : 'unknown')
       );
 
     this.logo = this.themes.getCurrentTheme()
       .pipe(
-        map(t => t.brandLogo)
+        map(t => t ? t.brandLogo : 'unknown')
       );
 
     this.themeSubscription = combineLatest([this.brand, this.logo])
@@ -35,7 +35,9 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     console.log('destroying navbar component');
-    this.themeSubscription.unsubscribe();
+    if (this.themeSubscription) {
+      this.themeSubscription.unsubscribe();
+    }
     // throw new Error("Method not implemented.");
   }
 }
