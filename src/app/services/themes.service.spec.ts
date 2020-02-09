@@ -7,9 +7,7 @@ describe('ThemesService', () => {
   let service: ThemesService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [BrowserTestingModule]
-    });
+    TestBed.configureTestingModule({});
     service = TestBed.inject(ThemesService);
   });
 

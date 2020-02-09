@@ -8,7 +8,9 @@ import * as _ from 'lodash';
 
 type StringKVMap = {[key: string]: string};
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class ThemesService {
 
   private currentTheme: BehaviorSubject<Theme> = new BehaviorSubject(null);
