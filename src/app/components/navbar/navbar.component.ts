@@ -45,4 +45,8 @@ export class NavbarComponent implements OnInit, OnDestroy {
     }
     // throw new Error("Method not implemented.");
   }
+
+  switchTheme() {
+    this.themes.setCurrentTheme(this.themes.generateRandomTheme());
+  }
 }
