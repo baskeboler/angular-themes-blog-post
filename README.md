@@ -1,6 +1,6 @@
 [![Gitpod Ready-to-Code](https://img.shields.io/badge/Gitpod-Ready--to--Code-blue?logo=gitpod)](https://gitpod.io/#https://github.com/baskeboler/angular-themes-blog-post) 
 [![codecov](https://codecov.io/gh/baskeboler/angular-themes-blog-post/branch/master/graph/badge.svg)](https://codecov.io/gh/baskeboler/angular-themes-blog-post)
-
+[![Netlify Status](https://api.netlify.com/api/v1/badges/e568f1a7-1e0b-47e2-a32e-794cbab3b396/deploy-status)](https://app.netlify.com/sites/angular-themes-demo/deploys)
 
 # Angular Themes Blog Post
 
