@@ -1,0 +1,3 @@
+# redirects for netlify
+/home         /
+/blog-post    /#blog-post
