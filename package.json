@@ -27,7 +27,7 @@
     "faker": "^4.1.0",
     "jquery": "^3.4.1",
     "ngx-markdown": "^8.2.2",
-    "rxjs": "~6.5.4",
+    "rxjs": "~6.6.3",
     "tinycolor2": "^1.4.1",
     "tslib": "^2.0.0",
     "zone.js": "~0.10.3"
